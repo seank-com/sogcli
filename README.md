@@ -178,8 +178,6 @@ sog cal delete <uid>
 sog cal calendars                    # List calendars
 ```
 
-Calendar listings use `DTEND` when present; otherwise, they calculate the end from `DTSTART` plus `DURATION`.
-
 **Alias:** `sog c` → `sog cal`
 
 ---
