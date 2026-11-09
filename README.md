@@ -180,6 +180,13 @@ sog cal calendars                    # List calendars
 
 **Alias:** `sog c` → `sog cal`
 
+Range reads request server-expanded recurrence occurrences. For a complete local
+day, use `--from today --to tomorrow --max 0 --json`; the end is exclusive and
+`--max 0` disables the list's default 50-occurrence limit. Event JSONL includes
+`status` when set, so consumers can recognize cancelled occurrences. See
+[calendar reads](docs/calendar.md) for the module flow, date bounds and output
+contract.
+
 ---
 
 ### 📁 Files (WebDAV)
