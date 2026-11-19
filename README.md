@@ -164,6 +164,7 @@ sog drafts send <uid>
 ```bash
 sog cal list                         # Upcoming events
 sog cal list --from 2025-01-01 --to 2025-01-31
+sog cal list --from 2025-01-01 --to 2025-01-02 --max 0 --json  # All occurrences in a UTC-date range
 sog cal today                        # Today's events
 sog cal week                         # This week
 sog cal search "meeting"             # Search events
@@ -176,16 +177,10 @@ sog cal update <uid> --title "New Title" --location "Zoom"
 sog cal delete <uid>
 
 sog cal calendars                    # List calendars
+sog cal calendars --json             # Calendar paths for scripts
 ```
 
 **Alias:** `sog c` → `sog cal`
-
-Range reads request server-expanded recurrence occurrences. For a complete local
-day, use `--from today --to tomorrow --max 0 --json`; the end is exclusive and
-`--max 0` disables the list's default 50-occurrence limit. Event JSONL includes
-`status` when set, so consumers can recognize cancelled occurrences. See
-[calendar reads](docs/calendar.md) for the module flow, date bounds and output
-contract.
 
 ---
 
