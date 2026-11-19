@@ -235,6 +235,7 @@ sog tasks clear                      # Clear completed
 sog contacts list
 sog contacts search "john"
 sog contacts get <uid>
+sog contacts get <uid> --json         # Contact details, including notes and addresses
 
 sog contacts create "John Doe" -e john@example.com -p 555-1234
 sog contacts update <uid> --email new@example.com
