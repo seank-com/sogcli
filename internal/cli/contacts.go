@@ -2,7 +2,9 @@ package cli
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"os"
 	"strings"
 	"time"
 
@@ -359,11 +361,32 @@ func generateContactUID() string {
 
 // outputContactsJSON outputs contacts as JSON.
 func outputContactsJSON(contacts []carddav.Contact) error {
+	encoder := json.NewEncoder(os.Stdout)
+	encoder.SetEscapeHTML(false)
 	for _, c := range contacts {
-		emails := strings.Join(c.Emails, ",")
-		phones := strings.Join(c.Phones, ",")
-		fmt.Printf(`{"uid":"%s","full_name":"%s","emails":"%s","phones":"%s","org":"%s"}`+"\n",
-			c.UID, c.FullName, emails, phones, c.Org)
+		row := struct {
+			UID       string   `json:"uid"`
+			FullName  string   `json:"full_name"`
+			Emails    string   `json:"emails"`
+			Phones    string   `json:"phones"`
+			Org       string   `json:"org"`
+			FirstName string   `json:"first_name,omitempty"`
+			LastName  string   `json:"last_name,omitempty"`
+			Title     string   `json:"title,omitempty"`
+			Note      string   `json:"note,omitempty"`
+			Birthday  string   `json:"birthday,omitempty"`
+			Addresses []string `json:"addresses,omitempty"`
+			URL       string   `json:"url,omitempty"`
+			ETag      string   `json:"etag,omitempty"`
+		}{
+			UID: c.UID, FullName: c.FullName,
+			Emails: strings.Join(c.Emails, ","), Phones: strings.Join(c.Phones, ","), Org: c.Org,
+			FirstName: c.FirstName, LastName: c.LastName, Title: c.Title,
+			Note: c.Note, Birthday: c.Birthday, Addresses: c.Addresses, URL: c.URL, ETag: c.ETag,
+		}
+		if err := encoder.Encode(row); err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -428,8 +451,17 @@ func outputContactDetail(contact *carddav.Contact) error {
 
 // outputAddressBooksJSON outputs address books as JSON.
 func outputAddressBooksJSON(books []carddav.AddressBook) error {
+	encoder := json.NewEncoder(os.Stdout)
+	encoder.SetEscapeHTML(false)
 	for _, b := range books {
-		fmt.Printf(`{"path":"%s","name":"%s","description":"%s"}`+"\n", b.Path, b.Name, b.Description)
+		row := struct {
+			Path        string `json:"path"`
+			Name        string `json:"name"`
+			Description string `json:"description"`
+		}{b.Path, b.Name, b.Description}
+		if err := encoder.Encode(row); err != nil {
+			return err
+		}
 	}
 	return nil
 }
